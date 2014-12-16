@@ -1,36 +1,32 @@
 package nl.robertalblas.engine.scene;
 
-import static javax.media.opengl.GL.GL_TRIANGLES;
-
 import java.awt.event.KeyEvent;
 import java.util.Set;
 
 import javax.media.opengl.GL2;
 
 import nl.robertalblas.engine.renderer.Camera;
+import nl.robertalblas.engine.resource.Cube;
+import nl.robertalblas.engine.resource.Drawable;
 import nl.robertalblas.engine.util.Vector3;
 
-public class Cube extends Entity implements Camera{
+public class Thingy extends Entity implements Camera {
 
 	private Vector3 lookAt;
-
-	private float r;
-	private float g;
-	private float b;
 
 	private float speed;
 	private float turnspeed;
 
-	public Cube() {
+	private Drawable drawable;
+
+	public Thingy() {
 		super();
 		lookAt = getCameraPosition(10.0f);
 
-		r = 1.0f;
-		g = 0.0f;
-		b = 0.0f;
-
 		speed = 0.01f;
 		turnspeed = 0.1f;
+
+		drawable = new Cube(1.0f, 0.0f, 0.0f);
 	}
 
 	@Override
@@ -78,72 +74,15 @@ public class Cube extends Entity implements Camera{
 	}
 
 	public void draw(GL2 gl) {
-		gl.glBegin(GL_TRIANGLES);
-		gl.glColor3f(r, g, b);
-
-		// Front face
-		gl.glVertex3f(1.0f, -1.0f, -1.0f);
-		gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-		gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-		gl.glVertex3f(1.0f, -1.0f, -1.0f);
-		gl.glVertex3f(1.0f, 1.0f, -1.0f);
-		gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-
-		// Back face
-		gl.glVertex3f(1.0f, -1.0f, 1.0f);
-		gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-		gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-		gl.glVertex3f(1.0f, -1.0f, 1.0f);
-		gl.glVertex3f(1.0f, 1.0f, 1.0f);
-		gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-
-		// Top face
-		gl.glVertex3f(1.0f, 1.0f, -1.0f);
-		gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-		gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-		gl.glVertex3f(1.0f, 1.0f, -1.0f);
-		gl.glVertex3f(1.0f, 1.0f, 1.0f);
-		gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-
-		// Bottom face
-		gl.glColor3f(0.0f, 0.0f, 0.0f);
-		gl.glVertex3f(1.0f, -1.0f, -1.0f);
-		gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-		gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-		gl.glVertex3f(1.0f, -1.0f, -1.0f);
-		gl.glVertex3f(1.0f, -1.0f, 1.0f);
-		gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-
-		gl.glColor3f(r, g, b);
-		// Left face
-		gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-		gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-		gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-		gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-		gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-		gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-
-		// Right face
-		gl.glColor3f(0.0f, 1.0f, 0.0f);
-		gl.glVertex3f(1.0f, -1.0f, -1.0f);
-		gl.glVertex3f(1.0f, 1.0f, -1.0f);
-		gl.glVertex3f(1.0f, 1.0f, 1.0f);
-		gl.glVertex3f(1.0f, -1.0f, -1.0f);
-		gl.glVertex3f(1.0f, -1.0f, 1.0f);
-		gl.glVertex3f(1.0f, 1.0f, 1.0f);
-
-		gl.glEnd();
+		drawable.draw(gl);
 	}
 
 	public Vector3 getCameraLookAtPosition() {
 		return position;
 	}
 
-
 	public void setColor(float r, float g, float b) {
-		this.r = r;
-		this.g = g;
-		this.b = b;
+		((Cube) drawable).setColor(r, g, b);
 	}
 
 	public void moveLeft(float speed) {
@@ -197,14 +136,14 @@ public class Cube extends Entity implements Camera{
 
 		return lookAt;
 	}
-	
-	public Vector3 getUpVector(){
+
+	public Vector3 getUpVector() {
 		Vector3 up = new Vector3();
-		
+
 		up.addX((float) (speed * Math.cos(Math.toRadians(rotation.getY())) * Math.cos(Math.toRadians(rotation.getZ() + 90))));
 		up.addZ((float) -(speed * Math.sin(Math.toRadians(rotation.getY())) * Math.cos(Math.toRadians(rotation.getZ() + 90))));
 		up.addY((float) (speed * Math.sin(Math.toRadians(rotation.getZ() + 90))));
-		
+
 		return up;
 	}
 }

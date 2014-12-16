@@ -10,17 +10,17 @@ import nl.robertalblas.engine.renderer.Renderer;
 import nl.robertalblas.engine.util.Vector3;
 
 public class World {
-	private Cube movingCube;
-	private Cube staticCube;
+	private Thingy movingCube;
+	private Thingy staticCube;
 	
 	private List<Entity> entities;
 	private Camera lookAt;
 	private Renderer renderer;
 	
 	public World(){
-		movingCube = new Cube();
+		movingCube = new Thingy();
 		movingCube.setPosition(new Vector3(0.0f, 2.0f, 10.0f));
-		staticCube = new Cube();
+		staticCube = new Thingy();
 		staticCube.setPosition(new Vector3(0.0f, 0.0f, 10.0f));
 		staticCube.setColor(0.0f, 0.0f, 0.0f);
 
